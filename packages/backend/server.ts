@@ -64,39 +64,36 @@ app.use((req, res, next) => {
     });
 });
 
-app.post(
-  '/sign-in',
+app.get(
+  '/me',
   asyncHandler(async (req, res) => {
-    const user = parseWithSchema(userSchema, req.body);
-    if (!user) {
-      res
-        .status(400)
-        .send({ message: 'Unable to parse request body according to schema' });
+    const authHeader = req.headers.authorization;
+    if (!authHeader || authHeader?.split(' ').length < 2) {
+      res.status(401).send({
+        message:
+          'Invalid authorization header, are you sure you have signed in?',
+      });
       return;
     }
-    const users = await readJsonFile<UserSchema[]>(
-      './src/datasource/users.json',
-    );
-    if (
-      users.some(
-        ({ username, password }) => user.username === username && user.password === password,
-      )
-    ) {
-      const sessionId = makeId(64);
-      await readAndWriteJson<Record<string, string>>(
+    const [, sessionId] = authHeader.split(' ');
+    try {
+      const sessions = await readJsonFile<Record<string, string>>(
         './src/datasource/sessions.json',
-        (oldContent) => ({
-          ...oldContent,
-          [user.username]: sessionId,
-        }),
       );
-      res.status(200).send({ data: { sessionId } });
-      return;
+      for (const username of Object.keys(sessions)) {
+        const id = sessions[username];
+        if (id === sessionId) {
+          res.status(200).send({ data: { username } });
+          return;
+        }
+      }
     }
-    res.status(401).send({
-      message:
-        "Invalid credentials, are you sure you've inputted the correct values?",
-    });
+    catch (e) {
+      res.status(401).send({
+        message:
+          'Unable to validate sessionId, are you sure you are signed in?',
+      });
+    }
   }),
 );
 
