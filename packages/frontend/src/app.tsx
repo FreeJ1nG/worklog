@@ -7,8 +7,12 @@ import {
 } from 'worklog-shared';
 
 import { LoadingComponent } from '@/components/loading-component';
+import LogDeleteDialog from '@/components/log-delete-dialog';
+import LogDetailPopover from '@/components/log-detail-popover';
+import { LogFormDialog } from '@/components/log-form-dialog';
 import { Button } from '@/components/ui/button';
 import { DAYS, MONTHS } from '@/lib/constants';
+import { useAuth } from '@/lib/hooks/use-auth';
 import { createLog, deleteLog, getLogs, updateLog } from '@/lib/services/logs';
 import {
   cn,
@@ -17,12 +21,9 @@ import {
   getTimeString,
 } from '@/lib/utils';
 
-import LogDeleteDialog from './components/log-delete-dialog';
-import LogDetailPopover from './components/log-detail-popover';
-import { LogFormDialog } from './components/log-form-dialog';
-
 function App(): ReactNode {
   const qc = useQueryClient();
+  const isAuthenticated = useAuth();
   const [selectedMonth, setSelectedMonth] = useState<number>(
     () => new Date().getMonth() + 1,
   );
@@ -138,13 +139,15 @@ function App(): ReactNode {
           setSelectedLogToDelete(undefined);
         }}
       />
-      <Button
-        onClick={() => setOpenCreateDialog(true)}
-        variant="default"
-        className="fixed bottom-4 right-4 z-40"
-      >
-        Add work log
-      </Button>
+      {isAuthenticated && (
+        <Button
+          onClick={() => setOpenCreateDialog(true)}
+          variant="default"
+          className="fixed bottom-4 right-4 z-40"
+        >
+          Add work log
+        </Button>
+      )}
       <div className="flex flex-row gap-2 overflow-auto">
         {MONTHS.map((month) => (
           <Button

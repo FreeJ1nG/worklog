@@ -5,6 +5,7 @@ import { type LogSchema } from 'worklog-shared';
 
 import { Button } from '@/components/ui/button';
 import { Popover } from '@/components/ui/popover';
+import { useAuth } from '@/lib/hooks/use-auth';
 
 export interface LogDetailPopoverProps {
   children?: ReactNode;
@@ -19,6 +20,8 @@ export default function LogDetailPopover({
   onEdit,
   onDelete,
 }: LogDetailPopoverProps): ReactNode {
+  const isAuthenticated = useAuth();
+
   return (
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
@@ -45,16 +48,18 @@ export default function LogDetailPopover({
               <div className="text-sm">{desc}</div>
             </div>
           ))}
-          <div className="my-2 flex items-center justify-end gap-2">
-            <Button onClick={onDelete} variant="destructive" size="sm">
-              <Trash2 className="mr-2 h-4 w-4" />
-              <div className="text-xs">Delete</div>
-            </Button>
-            <Button onClick={onEdit} variant="secondary" size="sm">
-              <Pencil className="mr-2 h-4 w-4" />
-              <div className="text-xs">Edit</div>
-            </Button>
-          </div>
+          {isAuthenticated && (
+            <div className="my-2 flex items-center justify-end gap-2">
+              <Button onClick={onDelete} variant="destructive" size="sm">
+                <Trash2 className="mr-2 h-4 w-4" />
+                <div className="text-xs">Delete</div>
+              </Button>
+              <Button onClick={onEdit} variant="secondary" size="sm">
+                <Pencil className="mr-2 h-4 w-4" />
+                <div className="text-xs">Edit</div>
+              </Button>
+            </div>
+          )}
         </div>
       </PopoverContent>
     </Popover>

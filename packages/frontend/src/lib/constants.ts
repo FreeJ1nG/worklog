@@ -100,3 +100,5 @@ export const DAYS: Day[] = [
     shortLabel: 'Sat',
   },
 ];
+
+export const SESSION_ID_KEY = '__worklog-session-id__';

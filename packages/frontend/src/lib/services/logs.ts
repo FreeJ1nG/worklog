@@ -4,6 +4,8 @@ import {
   type LogSchema,
 } from 'worklog-shared';
 
+import { getAuthHeader } from '@/lib/utils';
+
 export const getLogs = async ({
   startTime,
   endTime,
@@ -22,6 +24,7 @@ export const createLog = async (
   const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/logs`, {
     headers: {
       'Content-Type': 'application/json',
+      ...getAuthHeader(),
     },
     method: 'POST',
     body: JSON.stringify(log),
@@ -36,6 +39,9 @@ export const createLog = async (
 export const deleteLog = async (id: number): Promise<void> => {
   const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/logs/${id}`, {
     method: 'DELETE',
+    headers: {
+      ...getAuthHeader(),
+    },
   });
   if (!res.ok)
     throw new Error(
@@ -54,6 +60,7 @@ export const updateLog = async ({
   const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/logs/${id}`, {
     headers: {
       'Content-Type': 'application/json',
+      ...getAuthHeader(),
     },
     method: 'PUT',
     body: JSON.stringify(log),

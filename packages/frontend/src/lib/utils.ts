@@ -2,6 +2,8 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { type LogSchema } from 'worklog-shared';
 
+import { SESSION_ID_KEY } from './constants';
+
 export const cn = (...inputs: ClassValue[]): string => {
   return twMerge(clsx(inputs));
 };
@@ -39,5 +41,24 @@ export const getLogDynamicStyles = (
   return {
     left: `${(startInMinutes / 1440) * 100}%`,
     right: `${((1440 - endInMinutes) / 1440) * 100}%`,
+  };
+};
+
+export const getAuthHeader = (): Record<string, string> => {
+  let sessionId: string | undefined;
+  document.cookie
+    .split(';')
+    .map((s) => s.trim())
+    .forEach((keyValue) => {
+      const [key, value] = keyValue.split('=');
+      if (key === SESSION_ID_KEY) {
+        sessionId = value;
+        return;
+      }
+    });
+  if (!sessionId) return {};
+
+  return {
+    Authorization: `SessionId ${sessionId}`,
   };
 };
