@@ -1,4 +1,3 @@
-import fsp from 'node:fs/promises';
 import path from 'node:path';
 
 import cors from 'cors';
@@ -9,13 +8,19 @@ import {
   logIdParamSchema,
   type LogJsonEntrySchema,
   logSchema,
+  makeId,
+  type UserSchema,
+  userSchema,
 } from 'worklog-shared';
 
+import { WHITELISTED_SERVICES } from './src/constants/whitelist.js';
 import {
   getNewId,
   readAndWriteJson,
+  readJsonFile,
   replaceFileContent,
 } from './src/utils/fs.js';
+import { parseWithSchema } from './src/utils/http.js';
 
 const __dirname = path.resolve();
 
@@ -24,12 +29,83 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.use((req, res, next) => {
+  if (
+    WHITELISTED_SERVICES.some(({ method, url }) => req.method === method && url instanceof RegExp
+      ? url.test(req.url)
+      : url === req.url)
+  ) {
+    next();
+    return;
+  }
+  const authHeader = req.headers.authorization;
+  if (!authHeader || authHeader?.split(' ').length < 2) {
+    res.status(401).send({
+      message: 'Invalid authorization header, are you sure you have signed in?',
+    });
+    return;
+  }
+  const [, sessionId] = authHeader.split(' ');
+  readJsonFile<Record<string, string>>('./src/datasource/sessions.json')
+    .then((sessions) => {
+      if (!Object.values(sessions).some((id) => id === sessionId)) {
+        res.status(401).send({
+          message: 'Invalid sessionId, are you sure you have signed in?',
+        });
+        return;
+      }
+      next();
+    })
+    .catch(() => {
+      res.status(500).send({
+        message:
+          'Something went wrong while trying to validate sessionId, please contact system admin',
+      });
+    });
+});
+
+app.post(
+  '/sign-in',
+  asyncHandler(async (req, res) => {
+    const user = parseWithSchema(userSchema, req.body);
+    if (!user) {
+      res
+        .status(400)
+        .send({ message: 'Unable to parse request body according to schema' });
+      return;
+    }
+    const users = await readJsonFile<UserSchema[]>(
+      './src/datasource/users.json',
+    );
+    if (
+      users.some(
+        ({ username, password }) => user.username === username && user.password === password,
+      )
+    ) {
+      const sessionId = makeId(64);
+      await readAndWriteJson<Record<string, string>>(
+        './src/datasource/sessions.json',
+        (oldContent) => ({
+          ...oldContent,
+          [user.username]: sessionId,
+        }),
+      );
+      res.status(200).send({ data: { sessionId } });
+      return;
+    }
+    res.status(401).send({
+      message:
+        "Invalid credentials, are you sure you've inputted the correct values?",
+    });
+  }),
+);
+
 app.post(
   '/admin/reset',
   asyncHandler(async (_req, res) => {
     try {
       await replaceFileContent(
-        path.resolve(__dirname, './src/data/logs.json'),
+        path.resolve(__dirname, './src/datasource/logs.json'),
         '[]',
       );
       res
@@ -56,11 +132,9 @@ app.get(
       });
       return;
     }
-    const logsJsonStr = await fsp.readFile(
-      path.resolve(__dirname, './src/data/logs.json'),
-      { encoding: 'utf8' },
+    let logs = await readJsonFile<LogJsonEntrySchema[]>(
+      './src/datasource/logs.json',
     );
-    let logs = JSON.parse(logsJsonStr) as LogJsonEntrySchema[];
     logs = logs.filter(
       (log) => log.startTime <= queryParams.endTime
       && log.endTime >= queryParams.startTime,
@@ -72,19 +146,19 @@ app.get(
 app.post(
   '/logs',
   asyncHandler(async (req, res) => {
-    const { success, data: logs } = logSchema.safeParse(req.body);
-    if (!success) {
+    const logs = parseWithSchema(logSchema, req.body);
+    if (!logs) {
       res.status(400).send({
         message: 'Unable to parse body, please check your request body',
       });
       return;
     }
     const data = await readAndWriteJson(
-      './src/data/logs.json',
+      './src/datasource/logs.json',
       async (oldJsonContent: LogJsonEntrySchema[]) => {
         return [
           ...oldJsonContent,
-          { ...logs, id: await getNewId('./src/data/logs.json') },
+          { ...logs, id: await getNewId('./src/datasource/logs.json') },
         ];
       },
     );
@@ -95,8 +169,8 @@ app.post(
 app.delete(
   '/logs/:logId',
   asyncHandler(async (req, res) => {
-    const { success, data: params } = logIdParamSchema.safeParse(req.params);
-    if (!success) {
+    const params = parseWithSchema(logIdParamSchema, req.params);
+    if (!params) {
       res.status(400).send({
         message:
           'Unable to parse logId parameter, are you sure the parameter is there?',
@@ -104,7 +178,7 @@ app.delete(
       return;
     }
     const data = await readAndWriteJson(
-      './src/data/logs.json',
+      './src/datasource/logs.json',
       (oldJsonContent: LogJsonEntrySchema[]) => {
         return oldJsonContent.filter(({ id }) => id !== params.logId);
       },
@@ -116,19 +190,16 @@ app.delete(
 app.put(
   '/logs/:logId',
   asyncHandler(async (req, res) => {
-    const { success: logIdParamSchemaSuccess, data: params }
-      = logIdParamSchema.safeParse(req.params);
-    if (!logIdParamSchemaSuccess) {
+    const params = parseWithSchema(logIdParamSchema, req.params);
+    if (!params) {
       res.status(400).send({
         message:
           'Unable to parse logId parameter, are you sure the parameter is there?',
       });
       return;
     }
-    const { success: logSchemaSuccess, data: logs } = logSchema.safeParse(
-      req.body,
-    );
-    if (!logSchemaSuccess) {
+    const logs = parseWithSchema(logSchema, req.body);
+    if (!logs) {
       res.status(400).send({
         message:
           "Unable to parse request body, are you sure it's passing the correct data?",
@@ -136,7 +207,7 @@ app.put(
       return;
     }
     const data = await readAndWriteJson(
-      './src/data/logs.json',
+      './src/datasource/logs.json',
       (oldJsonContent: LogJsonEntrySchema[]) => {
         return [
           ...oldJsonContent.filter(({ id }) => id !== params.logId),

@@ -5,7 +5,8 @@
   "scripts": {
     "build": "rm -rf dist && tsc --project ./tsconfig.build.json"
   },
-  "main": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": {
