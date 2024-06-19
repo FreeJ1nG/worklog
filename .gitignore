@@ -13,6 +13,7 @@ dist-ssr
 *.local
 
 **/datasource/*
+!**/datasource/README.md
 
 # Editor directories and files
 .vscode/*
