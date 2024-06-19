@@ -12,7 +12,11 @@ dist
 dist-ssr
 *.local
 
+<<<<<<< Updated upstream
 ./packages/backend/src/data/users.json
+=======
+**/datasource/**/*
+>>>>>>> Stashed changes
 
 # Editor directories and files
 .vscode/*
