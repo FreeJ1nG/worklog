@@ -1,0 +1,20 @@
+{
+  "name": "worklog-shared",
+  "version": "1.0.0",
+  "author": "freejing",
+  "scripts": {
+    "build": "rm -rf dist && tsc --project ./tsconfig.build.json"
+  },
+  "main": "",
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      }
+    }
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  }
+}

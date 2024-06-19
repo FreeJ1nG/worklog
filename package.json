@@ -1,0 +1,19 @@
+{
+  "name": "root",
+  "type": "module",
+  "version": "1.0.0",
+  "author": "freejing",
+  "scripts": {
+    "build:shared": "pnpm --stream --filter worklog-shared build",
+    "build:backend": "pnpm --stream --filter worklog-backend build",
+    "serve:backend": "pnpm --stream --filter worklog-backend serve",
+    "serve:frontend": "pnpm --stream --filter worklog-frontend dev",
+    "dev": "pnpm run build:shared && pnpm run /serve:*/",
+    "build:production": "pnpm run build:shared && pnpm run build:backend && pnpm --stream --filter worklog-frontend build"
+  },
+  "devDependencies": {
+    "eslint": "8.56.0",
+    "eslint-config-rational": "^5.0.15",
+    "typescript": "^5.4.5"
+  }
+}

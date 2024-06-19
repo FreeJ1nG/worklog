@@ -1,0 +1,160 @@
+[
+  {
+    "startTime": 1717462800000,
+    "endTime": 1717466400000,
+    "descriptions": [
+      "Onboarding call with Daniel",
+      "Introduction to PolicyMap products"
+    ],
+    "id": 1
+  },
+  {
+    "startTime": 1717545600000,
+    "endTime": 1717551000000,
+    "descriptions": [
+      "Onboarding call with Daniel"
+    ],
+    "id": 2
+  },
+  {
+    "startTime": 1717632000000,
+    "endTime": 1717638300000,
+    "descriptions": [
+      "Onboarding call with Daniel"
+    ],
+    "id": 3
+  },
+  {
+    "startTime": 1717718400000,
+    "endTime": 1717724700000,
+    "descriptions": [
+      "Onboarding call with Daniel"
+    ],
+    "id": 4
+  },
+  {
+    "startTime": 1717805700000,
+    "endTime": 1717812900000,
+    "descriptions": [
+      "Onboarding call with Daniel",
+      "Finally able to setup development account for me"
+    ],
+    "id": 5
+  },
+  {
+    "startTime": 1717830000000,
+    "endTime": 1717837200000,
+    "descriptions": [
+      "Explore the simple intricacies of Terraform, basic syntax, CLI commands, etc"
+    ],
+    "id": 6
+  },
+  {
+    "startTime": 1717930800000,
+    "endTime": 1717941600000,
+    "descriptions": [
+      "Explore how to provision a simple AWS instance with terraform",
+      "Explore how to provision docker images & containers with terraform",
+      "Explore how to store terraform state remotely in Terraform HCP & Terraform backend (S3)"
+    ],
+    "id": 7
+  },
+  {
+    "startTime": 1718065800000,
+    "endTime": 1718070300000,
+    "descriptions": [
+      "Call with Daniel"
+    ],
+    "id": 8
+  },
+  {
+    "startTime": 1718080200000,
+    "endTime": 1718082900000,
+    "descriptions": [
+      "Explore how sg-updater works"
+    ],
+    "id": 9
+  },
+  {
+    "startTime": 1718125200000,
+    "endTime": 1718131500000,
+    "descriptions": [
+      "Start setting up sg-updater"
+    ],
+    "id": 10
+  },
+  {
+    "startTime": 1718197140000,
+    "endTime": 1718211540000,
+    "descriptions": [
+      "Finish setting up SSH public key for VM access",
+      "Finish setting up bitbucket SSH Key for development shell",
+      "Finish setting up sg-updater (security group for aws)",
+      "Finish setting up repository in shell",
+      "Explore how to setup editor in shell"
+    ],
+    "id": 11
+  },
+  {
+    "startTime": 1718323200000,
+    "endTime": 1718329500000,
+    "descriptions": [
+      "Daily call with Daniel"
+    ],
+    "id": 12
+  },
+  {
+    "startTime": 1718332200000,
+    "endTime": 1718343000000,
+    "descriptions": [
+      "Explore what a data block in terraform is",
+      "Explore aws_resource_data_store, aws_resource_data_store (and related key-value pairs)"
+    ],
+    "id": 13
+  },
+  {
+    "startTime": 1718368200000,
+    "endTime": 1718372700000,
+    "descriptions": [
+      "Did my first task, moving credentials away from hard-coded JSON to SSM variable",
+      "https://bitbucket.org/policymap/tf-app/pull-requests/304",
+      "Explore cloudfront & cloudfront associations locally"
+    ],
+    "id": 14
+  },
+  {
+    "startTime": 1718384400000,
+    "endTime": 1718388900000,
+    "descriptions": [
+      "Call with Daniel",
+      "Fix some PR conflicts that happened from some changes from other folks"
+    ],
+    "id": 15
+  },
+  {
+    "startTime": 1718722800000,
+    "endTime": 1718728200000,
+    "descriptions": [
+      "Setup a bookmarklet cookie setter for backdoor access",
+      "Discuss SSO concerns with Daniel",
+      "Finally review and tested my PR"
+    ],
+    "id": 16
+  },
+  {
+    "startTime": 1718755200000,
+    "endTime": 1718761500000,
+    "descriptions": [
+      "Fix bug with PR (relating to cloudfront functions)"
+    ],
+    "id": 17
+  },
+  {
+    "startTime": 1718764200000,
+    "endTime": 1718767800000,
+    "descriptions": [
+      "Final touches on PR, figured out a way to get unique key-value-store-id injected to the javascript code"
+    ],
+    "id": 18
+  }
+]
