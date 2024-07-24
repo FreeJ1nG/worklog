@@ -5,7 +5,7 @@
   "author": "freejing",
   "scripts": {
     "build:shared": "pnpm --stream --filter worklog-shared build",
-    "build:backend": "pnpm --stream --filter worklog-backend build",
+    "build:backend": "pnpm run build:shared && pnpm --stream --filter worklog-backend build",
     "serve:backend": "pnpm --stream --filter worklog-backend serve",
     "serve:frontend": "pnpm --stream --filter worklog-frontend dev",
     "dev": "pnpm run build:shared && pnpm run /serve:*/",

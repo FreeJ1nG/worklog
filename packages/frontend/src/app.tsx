@@ -63,14 +63,18 @@ function App(): ReactNode {
   const { mutate: createLogMutation, isPending: isCreating } = useMutation({
     mutationFn: createLog,
     onSuccess(data) {
-      qc.setQueryData(['logs', { ...range }], () => data);
+      qc.setQueryData(['logs', { ...range }], () => data.filter(
+        ({ startTime, endTime }) => range.startTime <= endTime && range.endTime >= startTime,
+      ));
     },
   });
 
   const { mutate: updateLogMutation, isPending: isUpdating } = useMutation({
     mutationFn: updateLog,
     onSuccess(data) {
-      qc.setQueryData(['logs', { ...range }], () => data);
+      qc.setQueryData(['logs', { ...range }], () => data.filter(
+        ({ startTime, endTime }) => range.startTime <= endTime && range.endTime >= startTime,
+      ));
     },
   });
 
@@ -170,7 +174,7 @@ function App(): ReactNode {
         </div>
         <div className="text-sm">
           worked in
-          {' ' + MONTHS[selectedMonth].label}
+          {' ' + MONTHS[selectedMonth - 1].label}
         </div>
       </div>
       <div className="relative mt-6 flex flex-col overflow-auto pt-6 shadow-xl">
