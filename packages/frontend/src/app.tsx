@@ -165,10 +165,12 @@ function App(): ReactNode {
       </div>
       <div className="mt-4">
         <div className="font-bold">
-          {logs?.reduce(
-            (acc, log) => acc + (log.endTime - log.startTime) / (60 * 60 * 1000),
-            0,
-          )}
+          {Number(
+            logs?.reduce(
+              (acc, log) => acc + (log.endTime - log.startTime) / (60 * 60 * 1000),
+              0,
+            ),
+          ).toFixed(4)}
           {' '}
           hours
         </div>
