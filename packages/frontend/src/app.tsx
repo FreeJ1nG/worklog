@@ -17,6 +17,7 @@ import { createLog, deleteLog, getLogs, updateLog } from '@/lib/services/logs';
 import {
   cn,
   daysInMonth,
+  getLogDuration,
   getLogDynamicStyles,
   getTimeString,
 } from '@/lib/utils';
@@ -215,9 +216,17 @@ function App(): ReactNode {
                       className={cn(
                         'absolute bottom-0 top-0 z-30 my-2 flex flex-col items-center',
                         'justify-center rounded-sm bg-black font-semibold text-white shadow-sm',
+                        'truncate px-1',
                       )}
                     >
-                      {log.endTime - log.startTime >= 1.75 * 60 * 60 * 1000 && (
+                      {getLogDuration(
+                        log,
+                        selectedYear,
+                        selectedMonth,
+                        date,
+                        'ms',
+                      )
+                      >= 1.75 * 60 * 60 * 1000 && (
                         <div className="text-sm">
                           {new Date(log.startTime).toTimeString().slice(0, 5)}
                           -
@@ -225,26 +234,12 @@ function App(): ReactNode {
                         </div>
                       )}
                       <div className="text-xs font-bold">
-                        {Number(
-                          (
-                            (Math.min(
-                              log.endTime,
-                              new Date(
-                                selectedYear,
-                                selectedMonth - 1,
-                                date + 2,
-                              ).getTime() - 1,
-                            )
-                            - Math.max(
-                              log.startTime,
-                              new Date(
-                                selectedYear,
-                                selectedMonth - 1,
-                                date + 1,
-                              ).getTime(),
-                            ))
-                            / (1000 * 60 * 60)
-                          ).toFixed(4),
+                        {getLogDuration(
+                          log,
+                          selectedYear,
+                          selectedMonth,
+                          date,
+                          'hour',
                         )}
                         h
                       </div>
@@ -281,23 +276,13 @@ function App(): ReactNode {
                         .get(date + 1)
                         ?.reduce(
                           (acc, log) => acc
-                          + (Math.min(
-                            new Date(
-                              selectedYear,
-                              selectedMonth - 1,
-                              date + 2,
-                            ).getTime(),
-                            log.endTime,
-                          )
-                          - Math.max(
-                            new Date(
-                              selectedYear,
-                              selectedMonth - 1,
-                              date + 1,
-                            ).getTime() - 1,
-                            log.startTime,
-                          ))
-                          / (60 * 60 * 1000),
+                          + getLogDuration(
+                            log,
+                            selectedYear,
+                            selectedMonth,
+                            date,
+                            'hour',
+                          ),
                           0,
                         ) ?? 0
                     ).toFixed(4),

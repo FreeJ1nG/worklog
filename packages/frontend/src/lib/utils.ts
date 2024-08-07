@@ -71,3 +71,25 @@ export const getAuthHeader = (): Record<string, string> => {
     Authorization: `SessionId ${sessionId}`,
   };
 };
+
+export const getLogDuration = (
+  log: LogSchema,
+  selectedYear: number,
+  selectedMonth: number,
+  date: number,
+  format: 'hour' | 'ms',
+): number => {
+  return Number(
+    (
+      (Math.min(
+        log.endTime,
+        new Date(selectedYear, selectedMonth - 1, date + 2).getTime() - 1,
+      )
+      - Math.max(
+        log.startTime,
+        new Date(selectedYear, selectedMonth - 1, date + 1).getTime(),
+      ))
+      / (format === 'hour' ? 1000 * 60 * 60 : 1)
+    ).toFixed(4),
+  );
+};
