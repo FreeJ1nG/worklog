@@ -29,13 +29,22 @@ export const getTimeString = (timeInMinutes: number): string => {
 
 export const getLogDynamicStyles = (
   log: LogSchema,
+  selectedYear: number,
+  selectedMonth: number,
   date: number,
 ): { left: string; right: string } => {
-  let startDate = new Date(log.startTime);
-  if (startDate.getDate() < date) {
-    startDate = new Date(startDate.getFullYear(), startDate.getMonth(), date);
-  }
-  const endDate = new Date(log.endTime);
+  const startDate = new Date(
+    Math.max(
+      log.startTime,
+      new Date(selectedYear, selectedMonth - 1, date).getTime(),
+    ),
+  );
+  const endDate = new Date(
+    Math.min(
+      log.endTime,
+      new Date(selectedYear, selectedMonth - 1, date + 1).getTime() - 1,
+    ),
+  );
   const startInMinutes = startDate.getHours() * 60 + startDate.getMinutes();
   const endInMinutes = endDate.getHours() * 60 + endDate.getMinutes();
   return {

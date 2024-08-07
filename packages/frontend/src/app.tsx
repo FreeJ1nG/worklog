@@ -206,7 +206,12 @@ function App(): ReactNode {
                     onDelete={() => setSelectedLogToDelete(log)}
                   >
                     <button
-                      style={getLogDynamicStyles(log, date + 1)}
+                      style={getLogDynamicStyles(
+                        log,
+                        selectedYear,
+                        selectedMonth,
+                        date + 1,
+                      )}
                       className={cn(
                         'absolute bottom-0 top-0 z-30 my-2 flex flex-col items-center',
                         'justify-center rounded-sm bg-black font-semibold text-white shadow-sm',
@@ -222,7 +227,22 @@ function App(): ReactNode {
                       <div className="text-xs font-bold">
                         {Number(
                           (
-                            (log.endTime - log.startTime)
+                            (Math.min(
+                              log.endTime,
+                              new Date(
+                                selectedYear,
+                                selectedMonth - 1,
+                                date + 2,
+                              ).getTime() - 1,
+                            )
+                            - Math.max(
+                              log.startTime,
+                              new Date(
+                                selectedYear,
+                                selectedMonth - 1,
+                                date + 1,
+                              ).getTime(),
+                            ))
                             / (1000 * 60 * 60)
                           ).toFixed(4),
                         )}
@@ -261,7 +281,23 @@ function App(): ReactNode {
                         .get(date + 1)
                         ?.reduce(
                           (acc, log) => acc
-                          + (log.endTime - log.startTime) / (60 * 60 * 1000),
+                          + (Math.min(
+                            new Date(
+                              selectedYear,
+                              selectedMonth - 1,
+                              date + 2,
+                            ).getTime(),
+                            log.endTime,
+                          )
+                          - Math.max(
+                            new Date(
+                              selectedYear,
+                              selectedMonth - 1,
+                              date + 1,
+                            ).getTime() - 1,
+                            log.startTime,
+                          ))
+                          / (60 * 60 * 1000),
                           0,
                         ) ?? 0
                     ).toFixed(4),

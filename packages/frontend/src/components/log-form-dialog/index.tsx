@@ -38,8 +38,11 @@ export const LogFormDialog = ({
   onSubmit,
 }: LogFormDialogProps): ReactNode => {
   const { toast } = useToast();
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    initialData ? new Date(initialData.startTime) : undefined,
+  const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>(
+    initialData ? new Date(initialData.startTime) : new Date(),
+  );
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(
+    initialData ? new Date(initialData.endTime) : new Date(),
   );
   const [startTime, setStartTime] = useState<string>(
     initialData
@@ -54,7 +57,12 @@ export const LogFormDialog = ({
   );
 
   const resetData = useCallback(() => {
-    setSelectedDate(initialData ? new Date(initialData.startTime) : undefined);
+    setSelectedStartDate(
+      initialData ? new Date(initialData.startTime) : new Date(),
+    );
+    setSelectedEndDate(
+      initialData ? new Date(initialData.endTime) : new Date(),
+    );
     setStartTime(
       initialData
         ? new Date(initialData.startTime).toTimeString().slice(0, 5)
@@ -74,7 +82,7 @@ export const LogFormDialog = ({
   }, [initialData, resetData]);
 
   const handleSubmit = useCallback(() => {
-    if (!selectedDate) {
+    if (!selectedStartDate || !selectedEndDate) {
       toast({ title: 'You must select a date', variant: 'destructive' });
       return;
     }
@@ -86,8 +94,8 @@ export const LogFormDialog = ({
       toast({ title: 'You must select an end time', variant: 'destructive' });
       return;
     }
-    const startTimeDate = new Date(selectedDate);
-    const endTimeDate = new Date(selectedDate);
+    const startTimeDate = new Date(selectedStartDate);
+    const endTimeDate = new Date(selectedEndDate);
     const [sh, sm] = startTime.split(':');
     startTimeDate.setHours(Number.parseInt(sh, 10));
     startTimeDate.setMinutes(Number.parseInt(sm, 10));
@@ -105,7 +113,8 @@ export const LogFormDialog = ({
   }, [
     endTime,
     startTime,
-    selectedDate,
+    selectedStartDate,
+    selectedEndDate,
     descriptions,
     onSubmit,
     toast,
@@ -120,7 +129,7 @@ export const LogFormDialog = ({
         resetData();
       }}
     >
-      <DialogContent className="max-h-[calc(100vh-40px)] w-fit overflow-auto sm:w-[580px] lg:w-[800px]">
+      <DialogContent className="max-h-[calc(100vh-40px)] w-[820px] max-w-2xl">
         <DialogHeader>
           <DialogTitle>
             {type === 'create' ? 'Create' : 'Update'}
@@ -128,12 +137,19 @@ export const LogFormDialog = ({
             work log
           </DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col">
-          <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={(date) => setSelectedDate(date)}
-          />
+        <div className="flex flex-col items-center">
+          <div className="flex gap-4">
+            <Calendar
+              mode="single"
+              selected={selectedStartDate}
+              onSelect={(date) => setSelectedStartDate(date)}
+            />
+            <Calendar
+              mode="single"
+              selected={selectedEndDate}
+              onSelect={(date) => setSelectedEndDate(date)}
+            />
+          </div>
           <div className="mt-2 flex items-center gap-3">
             <Input
               type="time"
@@ -149,7 +165,7 @@ export const LogFormDialog = ({
               onChange={(e) => setEndTime(e.target.value)}
             />
           </div>
-          <div className="mt-5 flex flex-col gap-1">
+          <div className="mt-5 flex w-full flex-col gap-1">
             {descriptions.map((desc, i) => (
               <div key={i} className="flex items-center gap-2">
                 <Dot />
