@@ -21,399 +21,112 @@ def calculate_duration(start_timestamp, end_timestamp):
 # Sample data structure
 data = [
     {
-        "startTime": 1719827100000,
-        "endTime": 1719832500000,
-        "descriptions": ["Debug digest auth in CF"],
-        "id": 31,
-    },
-    {
-        "startTime": 1719886500000,
-        "endTime": 1719889200000,
-        "descriptions": ["Debug digest auth in CF"],
-        "id": 32,
-    },
-    {
-        "startTime": 1719907200000,
-        "endTime": 1719916200000,
+        "startTime": 1725156935534,
+        "endTime": 1725164135534,
         "descriptions": [
-            "Finally figure out the bug: _parseDigestHeader implementing .reduce improperly",
-            "Also figure out that there's still something wrong with access by credentials",
+            "Adjust tests in both website and test repo to be deterministic (still some more to go)",
+            "Refactor `safeClick` function to take in an optional `customBase` option",
         ],
-        "id": 33,
+        "id": 114,
     },
     {
-        "startTime": 1719935040000,
-        "endTime": 1719939540000,
+        "startTime": 1725242153706,
+        "endTime": 1725255353706,
         "descriptions": [
-            "Discuss future plans with Daniel",
-            "Decide that adding CloudFront logging will be the next step",
+            "Keep working on making deterministic tests, both on website and test repo"
         ],
-        "id": 34,
+        "id": 115,
     },
     {
-        "startTime": 1719979200000,
-        "endTime": 1719990000000,
+        "startTime": 1725550800000,
+        "endTime": 1725556840728,
         "descriptions": [
-            "Read different ways for logging CloudFront",
-            "Discover that the current CloudFront functions have a CloudWatch already setup",
+            "Verify whether testing works with production environment (it doesn't yet)",
+            "Find out that there are some things going wrong with the tests",
         ],
-        "id": 35,
+        "id": 116,
     },
     {
-        "startTime": 1720444500000,
-        "endTime": 1720446300000,
-        "descriptions": ["Debug digest authentication"],
-        "id": 36,
+        "startTime": 1725933024150,
+        "endTime": 1725941124150,
+        "descriptions": ["R&D how public key authentication works (WebAuthn)"],
+        "id": 117,
     },
     {
-        "startTime": 1720477800000,
-        "endTime": 1720483200000,
+        "startTime": 1726073100000,
+        "endTime": 1726080058326,
         "descriptions": [
-            "Have a meeting with the team, Helene, Robert, Daniel, Kevin, Almog",
-            "Debug digest auth",
+            "Talk to Daniel about testing, and doing TF necessary to get things working"
         ],
-        "id": 37,
+        "id": 118,
     },
     {
-        "startTime": 1720507500000,
-        "endTime": 1720515600000,
+        "startTime": 1726160430970,
+        "endTime": 1726171230970,
         "descriptions": [
-            "Debug digest auth",
-            "Explore hardware based authentication (yubikey)",
+            "Have a call with Daniel about the new way of doing test development (setting up a HTTP server and curling there)"
         ],
-        "id": 38,
+        "id": 119,
     },
     {
-        "startTime": 1720546200000,
-        "endTime": 1720553400000,
+        "startTime": 1726206300000,
+        "endTime": 1726211426717,
         "descriptions": [
-            "Change digest auth to basic auth (with salted + hashed password storage)",
-            "Leave comments on bitbucket issue relating to decisions that have been made",
+            "Try to figure out why tests weren't working",
+            "Also try to figure out why environment variables change from .env don't seem to be applied properly",
         ],
-        "id": 39,
+        "id": 120,
     },
     {
-        "startTime": 1720602000000,
-        "endTime": 1720605600000,
-        "descriptions": ["Verify that the AWS CLI for CloudFront logging works"],
-        "id": 40,
-    },
-    {
-        "startTime": 1720625340000,
-        "endTime": 1720630740000,
+        "startTime": 1726767300000,
+        "endTime": 1726775717171,
         "descriptions": [
-            "Setup developer shell, containers, certs, etc",
-            "https://policymap.atlassian.net/browse/PR-2046",
+            "Have a call with Daniel to discuss testing in dev",
+            "Figure out next steps to achieve this",
         ],
-        "id": 41,
+        "id": 121,
     },
     {
-        "startTime": 1720681200000,
-        "endTime": 1720686600000,
-        "descriptions": ["Read up on hardware authentication (YubiKey with WebAuthn)"],
-        "id": 42,
-    },
-    {
-        "startTime": 1720747800000,
-        "endTime": 1720757700000,
+        "startTime": 1726900200000,
+        "endTime": 1726910100000,
         "descriptions": [
-            "Almost finish setting up shell, discuss a lot of git processes in that happens in PolicyMap",
-            "Discussions with Daniel regarding Vite chunking and warmup",
+            "Figure out what needs to be done to get tests working in dev",
+            "Also figure out what needs to be changed to fix things in the cloud",
         ],
-        "id": 43,
+        "id": 122,
     },
     {
-        "startTime": 1720790940000,
-        "endTime": 1720803540000,
+        "startTime": 1726983000000,
+        "endTime": 1726995900000,
+        "descriptions": ["Fix things not working in the cloud, still some more TODOs"],
+        "id": 123,
+    },
+    {
+        "startTime": 1727108700000,
+        "endTime": 1727117735810,
         "descriptions": [
-            "Finally merge password hashing PR",
-            "Look into some of the CloudFront Terraform setup",
-            "Do R&D on Vite server warmup",
+            "Talk to Helene about disabling pam during testing, also about possible dangers of testing with production database",
+            "Figure out that tests are failing due to pam being enabled, which sends network requests every so often",
         ],
-        "id": 44,
+        "id": 124,
     },
     {
-        "startTime": 1720918800000,
-        "endTime": 1720925100000,
+        "startTime": 1727463343731,
+        "endTime": 1727466943731,
         "descriptions": [
-            "Explore Vite HMR and possible ways to serve bundled JS files instead of having a lot of JS files served through dev mode"
+            "I tried to debug why waitForNetworkIdle is not working, disabling walkme didn't work"
         ],
-        "id": 45,
+        "id": 125,
     },
     {
-        "startTime": 1721017800000,
-        "endTime": 1721038500000,
+        "startTime": 1727507400000,
+        "endTime": 1727527800000,
         "descriptions": [
-            "Explore what makes website load so slowly",
-            "https://policymap.atlassian.net/browse/PR-2049",
-            "Discover that SCSS is the thing that's causing load to be slow",
+            "Implement a custom waitForBackendIdle util to address waitForNetworkIdle no longer working",
+            "Fix data loader tests to work with the new util",
+            "In progress: Do the same thing with custom region draw test",
         ],
-        "id": 46,
-    },
-    {
-        "startTime": 1721043900000,
-        "endTime": 1721055600000,
-        "descriptions": [
-            "Created a PR for the R&D I did",
-            "Figure out that there's a Vite option called css.preprocessorMaxWorkers",
-            "Reduce the transform time for SCSS files by around 30%ish (not 100% sure, need to benchmark)",
-        ],
-        "id": 47,
-    },
-    {
-        "startTime": 1721108400000,
-        "endTime": 1721116500000,
-        "descriptions": [
-            "Setup and explore rsync with Daniel",
-            "Start setting up DB for my dev environment",
-        ],
-        "id": 48,
-    },
-    {
-        "startTime": 1721134800000,
-        "endTime": 1721141100000,
-        "descriptions": [
-            "Finish setting up rsync",
-            "Do R&D on git remote & local methodology",
-        ],
-        "id": 49,
-    },
-    {
-        "startTime": 1721198700000,
-        "endTime": 1721209500000,
-        "descriptions": [
-            "Do further setting up of my shell with DB",
-            "Create OpenAthens account, and testing whether things work",
-        ],
-        "id": 50,
-    },
-    {
-        "startTime": 1721237400000,
-        "endTime": 1721241900000,
-        "descriptions": [
-            "Create a ticket for a new task: https://policymap.atlassian.net/browse/PR-2052",
-            "Discuss how to tackle and implement the ticket",
-        ],
-        "id": 51,
-    },
-    {
-        "startTime": 1721284200000,
-        "endTime": 1721296800000,
-        "descriptions": [
-            "Explore boto3 library",
-            "Create ticket subtasks: https://policymap.atlassian.net/browse/PR-2052",
-            "Start implementing functionalities according to ticket",
-        ],
-        "id": 52,
-    },
-    {
-        "startTime": 1721300400000,
-        "endTime": 1721307600000,
-        "descriptions": [
-            "Implement new features for sg-updater",
-            "https://bitbucket.org/policymap/sg-updater/pull-requests/1",
-            "TODO: Implement `reboot` feature",
-        ],
-        "id": 53,
-    },
-    {
-        "startTime": 1721363400000,
-        "endTime": 1721372400000,
-        "descriptions": [
-            "Implement reboot feature + org terraform to allow user to do EC2 operations"
-        ],
-        "id": 54,
-    },
-    {
-        "startTime": 1721384100000,
-        "endTime": 1721385900000,
-        "descriptions": [
-            "Do finishing touches on PR",
-            "https://bitbucket.org/policymap/sg-updater/pull-requests/1",
-        ],
-        "id": 55,
-    },
-    {
-        "startTime": 1721393940000,
-        "endTime": 1721404740000,
-        "descriptions": [
-            "Review PR with Daniel",
-            "Discuss next ticket to do",
-            "Start R&D on Turbopack",
-            "R&D SCSS vs CSS vars",
-        ],
-        "id": 56,
-    },
-    {
-        "startTime": 1721467800000,
-        "endTime": 1721475000000,
-        "descriptions": [
-            "Explore Turbopack and figure out that it doesn’t support bundling for Vue right now",
-            "Write ticket for R&D: https://policymap.atlassian.net/browse/PR-2061",
-        ],
-        "id": 57,
-    },
-    {
-        "startTime": 1721659500000,
-        "endTime": 1721665800000,
-        "descriptions": ["Talk with Daniel about the SSO setup and how the flow works"],
-        "id": 58,
-    },
-    {
-        "startTime": 1721699400000,
-        "endTime": 1721713800000,
-        "descriptions": [
-            "Set up Control Panel with proper credentials in the SSO testing branch",
-            "Get acquainted with the Control Panel (sessions)",
-            "Tail logs in services container to look for possible errors after SSO change",
-        ],
-        "id": 59,
-    },
-    {
-        "startTime": 1721748000000,
-        "endTime": 1721749800000,
-        "descriptions": [
-            "Talk with Daniel about the next tasks",
-            "Test latest login flow",
-            "Figure out that +sub accounts exist",
-        ],
-        "id": 60,
-    },
-    {
-        "startTime": 1721791500000,
-        "endTime": 1721797800000,
-        "descriptions": [
-            "Talk with Daniel, learn about SSO flow in more detail",
-            "R&D SSO",
-        ],
-        "id": 61,
-    },
-    {
-        "startTime": 1721817900000,
-        "endTime": 1721828700000,
-        "descriptions": [
-            "R&D more SSO",
-            "Test my @policymap user and +sub@policymap user to dev setup",
-        ],
-        "id": 62,
-    },
-    {
-        "startTime": 1721864400000,
-        "endTime": 1721883900000,
-        "descriptions": [
-            "Talk with Daniel & Kevin about IP restrictions for enterprise license",
-            "Learn & Test IP restrictions in the new SSO branch",
-            "Find out that IP restrictions isn't enforced right now",
-        ],
-        "id": 63,
-    },
-    {
-        "startTime": 1721968800000,
-        "endTime": 1721973600000,
-        "descriptions": [
-            "Test PolicyMap provider (sp: ndapa) and (sp: www), find out that www is not working properly",
-            "Test IP restrictions, and figure out something still doesn't work properly",
-        ],
-        "id": 64,
-    },
-    {
-        "startTime": 1722015000000,
-        "endTime": 1722020400000,
-        "descriptions": [
-            "Confirm that the fix Helene did fixed the issue i found",
-            "Did another round of testing",
-        ],
-        "id": 65,
-    },
-    {
-        "startTime": 1722103200000,
-        "endTime": 1722108600000,
-        "descriptions": [
-            "Do continuous testing on latest website",
-            "Start R&D on large build chunk size",
-        ],
-        "id": 66,
-    },
-    {
-        "startTime": 1722137700000,
-        "endTime": 1722140400000,
-        "descriptions": ["R&D on the manualChunks option in Vite"],
-        "id": 67,
-    },
-    {
-        "startTime": 1722164340000,
-        "endTime": 1722185940000,
-        "descriptions": [
-            "Do R&D on manualChunks",
-            "Create ticket for this: https://policymap.atlassian.net/browse/PR-2078",
-            "Finish R&D and write conclusions in the ticket",
-        ],
-        "id": 68,
-    },
-    {
-        "startTime": 1722189600000,
-        "endTime": 1722196800000,
-        "descriptions": [
-            "Create PR: https://bitbucket.org/policymap/website/pipelines/results/12125",
-            "Talk about the R&D i did with Daniel, discuss next steps",
-        ],
-        "id": 69,
-    },
-    {
-        "startTime": 1722231600000,
-        "endTime": 1722251400000,
-        "descriptions": [
-            "Play around with `node_tasks`",
-            "Do benchmarks to evaluate whether the changes are good for the app",
-            "Leave comments on ticket",
-        ],
-        "id": 70,
-    },
-    {
-        "startTime": 1722272400000,
-        "endTime": 1722274200000,
-        "descriptions": [
-            "Talk to Daniel about next tasks",
-            "Set up bitbucket & atlassian for @policymap email",
-        ],
-        "id": 71,
-    },
-    {
-        "startTime": 1722318300000,
-        "endTime": 1722321900000,
-        "descriptions": ["Did continuous SSO testing"],
-        "id": 72,
-    },
-    {
-        "startTime": 1722358800000,
-        "endTime": 1722380400000,
-        "descriptions": [
-            "Update node version in test repo Dockerfile",
-            "Create PR: https://bitbucket.org/policymap/test/pull-requests/13/overview",
-            "Create ticket: https://policymap.atlassian.net/browse/PR-2080",
-            "Do stuff with test repo",
-        ],
-        "id": 73,
-    },
-    {
-        "startTime": 1722411900000,
-        "endTime": 1722426300000,
-        "descriptions": [
-            "Find out why chrome installation didn't work before",
-            "Try and integrate new tests",
-            "R&D on what changed in the new versions of jest, puppeteer, etc",
-        ],
-        "id": 74,
-    },
-    {
-        "startTime": 1722431640000,
-        "endTime": 1722445140000,
-        "descriptions": [
-            "Talk to Daniel about the work I did in the test repo",
-            "Create a PR to allow S3 in dev shell: https://bitbucket.org/policymap/org/pull-requests/113",
-            "Talk about testing locally in shell",
-        ],
-        "id": 75,
+        "id": 126,
     },
 ]
 

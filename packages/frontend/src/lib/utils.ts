@@ -79,17 +79,35 @@ export const getLogDuration = (
   date: number,
   format: 'hour' | 'ms',
 ): number => {
-  return Number(
-    (
-      (Math.min(
-        log.endTime,
-        new Date(selectedYear, selectedMonth - 1, date + 2).getTime() - 1,
-      )
-      - Math.max(
-        log.startTime,
-        new Date(selectedYear, selectedMonth - 1, date + 1).getTime(),
-      ))
-      / (format === 'hour' ? 1000 * 60 * 60 : 1)
-    ).toFixed(4),
-  );
+  const startOfNextDay = new Date(
+    selectedYear,
+    selectedMonth - 1,
+    date + 2,
+  ).getTime();
+  const startOfDay = new Date(
+    selectedYear,
+    selectedMonth - 1,
+    date + 1,
+  ).getTime();
+
+  const endTime = Math.min(log.endTime, startOfNextDay - 1);
+  const startTime = Math.max(log.startTime, startOfDay);
+
+  const durationMs = endTime - startTime;
+  return format === 'hour'
+    ? +(durationMs / (1000 * 60 * 60)).toFixed(4)
+    : durationMs;
+  // return Number(
+  //   (
+  //     (Math.min(
+  //       log.endTime,
+  //       new Date(selectedYear, selectedMonth - 1, date + 2).getTime() - 1,
+  //     )
+  //     - Math.max(
+  //       log.startTime,
+  //       new Date(selectedYear, selectedMonth - 1, date + 1).getTime(),
+  //     ))
+  //     / (format === 'hour' ? 1000 * 60 * 60 : 1)
+  //   ).toFixed(4),
+  // );
 };
