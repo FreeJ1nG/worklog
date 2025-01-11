@@ -8,9 +8,6 @@ import {
   logIdParamSchema,
   type LogJsonEntrySchema,
   logSchema,
-  makeId,
-  type UserSchema,
-  userSchema,
 } from 'worklog-shared';
 
 import { WHITELISTED_SERVICES } from './src/constants/whitelist.js';

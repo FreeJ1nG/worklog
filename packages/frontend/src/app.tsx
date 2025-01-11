@@ -28,7 +28,7 @@ function App(): ReactNode {
   const [selectedMonth, setSelectedMonth] = useState<number>(
     () => new Date().getMonth() + 1,
   );
-  const [selectedYear] = useState<number>(() => new Date().getFullYear());
+  const [selectedYear, setSelectedYear] = useState<number>(() => new Date().getFullYear());
   const [selectedLogToUpdate, setSelectedLogToUpdate] = useState<
     LogJsonEntrySchema | undefined
   >(undefined);
@@ -45,6 +45,7 @@ function App(): ReactNode {
   const range = useMemo(() => {
     const now = new Date();
     now.setMonth(selectedMonth - 1);
+    now.setFullYear(selectedYear);
     const beginningOfMonth = new Date(now.toDateString());
     const endOfMonth = new Date(now.toDateString());
     beginningOfMonth.setDate(1);
@@ -54,7 +55,7 @@ function App(): ReactNode {
       startTime: beginningOfMonth.getTime(),
       endTime: endOfMonth.getTime(),
     };
-  }, [selectedMonth]);
+  }, [selectedMonth, selectedYear]);
 
   const { data: logs, isLoading } = useQuery({
     queryKey: ['logs', { ...range }],
@@ -153,6 +154,19 @@ function App(): ReactNode {
           Add work log
         </Button>
       )}
+      <div className="mb-4 flex items-center gap-3">
+        <button onClick={() => setSelectedYear((prev) => prev - 1)} className="bg-blue-500 w-10 h-10 flex justify-center items-center rounded-xl">
+          -1
+        </button>
+        <div className="font-bold text-xl">
+          {selectedYear}
+        </div>
+        <button onClick={() => setSelectedYear((prev) => prev + 1)} className="bg-blue-500 w-10 h-10 flex justify-center items-center rounded-xl">
+          +1
+        </button>
+        <button>
+        </button>
+      </div>
       <div className="flex flex-row gap-2 overflow-auto">
         {MONTHS.map((month) => (
           <Button
