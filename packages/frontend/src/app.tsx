@@ -108,6 +108,8 @@ function App(): ReactNode {
     return result;
   }, [logs, amountOfDays]);
 
+  console.log(' >>', logsMap);
+
   return (
     <div className="mb-10 flex flex-col p-6">
       <LogFormDialog
@@ -155,17 +157,20 @@ function App(): ReactNode {
         </Button>
       )}
       <div className="mb-4 flex items-center gap-3">
-        <button onClick={() => setSelectedYear((prev) => prev - 1)} className="bg-blue-500 w-10 h-10 flex justify-center items-center rounded-xl">
+        <button
+          onClick={() => setSelectedYear((prev) => prev - 1)}
+          className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500"
+        >
           -1
         </button>
-        <div className="font-bold text-xl">
-          {selectedYear}
-        </div>
-        <button onClick={() => setSelectedYear((prev) => prev + 1)} className="bg-blue-500 w-10 h-10 flex justify-center items-center rounded-xl">
+        <div className="text-xl font-bold">{selectedYear}</div>
+        <button
+          onClick={() => setSelectedYear((prev) => prev + 1)}
+          className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500"
+        >
           +1
         </button>
-        <button>
-        </button>
+        <button></button>
       </div>
       <div className="flex flex-row gap-2 overflow-auto">
         {MONTHS.map((month) => (

@@ -94,20 +94,12 @@ export const getLogDuration = (
   const startTime = Math.max(log.startTime, startOfDay);
 
   const durationMs = endTime - startTime;
+  console.log(' >>', log);
+  console.log(' >> startTime', startTime);
+  console.log(' >> endTime', endTime);
+  console.log(' >> durationMs', durationMs);
+  console.log(' >>', +(durationMs / (1000 * 60 * 60)).toFixed(4));
   return format === 'hour'
     ? +(durationMs / (1000 * 60 * 60)).toFixed(4)
     : durationMs;
-  // return Number(
-  //   (
-  //     (Math.min(
-  //       log.endTime,
-  //       new Date(selectedYear, selectedMonth - 1, date + 2).getTime() - 1,
-  //     )
-  //     - Math.max(
-  //       log.startTime,
-  //       new Date(selectedYear, selectedMonth - 1, date + 1).getTime(),
-  //     ))
-  //     / (format === 'hour' ? 1000 * 60 * 60 : 1)
-  //   ).toFixed(4),
-  // );
 };

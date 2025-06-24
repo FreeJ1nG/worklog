@@ -99,9 +99,13 @@ export const LogFormDialog = ({
     const [sh, sm] = startTime.split(':');
     startTimeDate.setHours(Number.parseInt(sh, 10));
     startTimeDate.setMinutes(Number.parseInt(sm, 10));
+    startTimeDate.setSeconds(0);
+    startTimeDate.setMilliseconds(0);
     const [eh, em] = endTime.split(':');
     endTimeDate.setHours(Number.parseInt(eh, 10));
     endTimeDate.setMinutes(Number.parseInt(em, 10));
+    endTimeDate.setSeconds(0);
+    endTimeDate.setMilliseconds(0);
     onSubmit({
       startTime: startTimeDate.getTime(),
       endTime: endTimeDate.getTime(),
