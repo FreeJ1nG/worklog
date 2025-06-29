@@ -92,13 +92,8 @@ export const getLogDuration = (
 
   const endTime = Math.min(log.endTime, startOfNextDay - 1);
   const startTime = Math.max(log.startTime, startOfDay);
-
   const durationMs = endTime - startTime;
-  console.log(' >>', log);
-  console.log(' >> startTime', startTime);
-  console.log(' >> endTime', endTime);
-  console.log(' >> durationMs', durationMs);
-  console.log(' >>', +(durationMs / (1000 * 60 * 60)).toFixed(4));
+
   return format === 'hour'
     ? +(durationMs / (1000 * 60 * 60)).toFixed(4)
     : durationMs;

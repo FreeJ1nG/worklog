@@ -95,9 +95,16 @@ function App(): ReactNode {
         for (const log of logs) {
           const logStartDate = new Date(log.startTime);
           const logEndDate = new Date(log.endTime);
+          const startOfNextDay
+            = new Date(selectedYear, selectedMonth - 1, date + 1).getTime() - 1;
+          const startOfDay = new Date(
+            selectedYear,
+            selectedMonth - 1,
+            date,
+          ).getTime();
           if (
-            logStartDate.getDate() === date
-            || logEndDate.getDate() === date
+            logEndDate.getTime() >= startOfDay
+            && logStartDate.getTime() <= startOfNextDay
           ) {
             logsInDate.push(log);
           }
@@ -106,9 +113,7 @@ function App(): ReactNode {
       result.set(date, logsInDate);
     }
     return result;
-  }, [logs, amountOfDays]);
-
-  console.log(' >>', logsMap);
+  }, [selectedYear, selectedMonth, logs, amountOfDays]);
 
   return (
     <div className="mb-10 flex flex-col p-6">
