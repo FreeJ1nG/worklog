@@ -130,8 +130,8 @@ app.get(
       './src/datasource/logs.json',
     );
     logs = logs.filter(
-      (log) => log.startTime <= queryParams.endTime
-      && log.endTime >= queryParams.startTime,
+      (log) => log.endTime >= queryParams.startTime
+      && log.startTime <= queryParams.endTime,
     );
     res.status(200).send({ data: logs });
   }),

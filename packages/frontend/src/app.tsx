@@ -1,26 +1,26 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { cnif } from 'cnif';
-import { type ReactNode, useMemo, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { cnif } from "cnif";
+import { type ReactNode, useMemo, useState } from "react";
 import {
   type GetLogsQueryParamSchema,
   type LogJsonEntrySchema,
-} from 'worklog-shared';
+} from "worklog-shared";
 
-import { LoadingComponent } from '@/components/loading-component';
-import LogDeleteDialog from '@/components/log-delete-dialog';
-import LogDetailPopover from '@/components/log-detail-popover';
-import { LogFormDialog } from '@/components/log-form-dialog';
-import { Button } from '@/components/ui/button';
-import { DAYS, MONTHS } from '@/lib/constants';
-import { useAuth } from '@/lib/hooks/use-auth';
-import { createLog, deleteLog, getLogs, updateLog } from '@/lib/services/logs';
+import { LoadingComponent } from "@/components/loading-component";
+import LogDeleteDialog from "@/components/log-delete-dialog";
+import LogDetailPopover from "@/components/log-detail-popover";
+import { LogFormDialog } from "@/components/log-form-dialog";
+import { Button } from "@/components/ui/button";
+import { DAYS, MONTHS } from "@/lib/constants";
+import { useAuth } from "@/lib/hooks/use-auth";
+import { createLog, deleteLog, getLogs, updateLog } from "@/lib/services/logs";
 import {
   cn,
   daysInMonth,
   getLogDuration,
   getLogDynamicStyles,
   getTimeString,
-} from '@/lib/utils';
+} from "@/lib/utils";
 
 function App(): ReactNode {
   const qc = useQueryClient();
@@ -28,7 +28,9 @@ function App(): ReactNode {
   const [selectedMonth, setSelectedMonth] = useState<number>(
     () => new Date().getMonth() + 1,
   );
-  const [selectedYear, setSelectedYear] = useState<number>(() => new Date().getFullYear());
+  const [selectedYear, setSelectedYear] = useState<number>(() =>
+    new Date().getFullYear(),
+  );
   const [selectedLogToUpdate, setSelectedLogToUpdate] = useState<
     LogJsonEntrySchema | undefined
   >(undefined);
@@ -58,32 +60,41 @@ function App(): ReactNode {
   }, [selectedMonth, selectedYear]);
 
   const { data: logs, isLoading } = useQuery({
-    queryKey: ['logs', { ...range }],
-    queryFn: ({ queryKey }) => getLogs({ ...(queryKey[1] as GetLogsQueryParamSchema) }),
+    queryKey: ["logs", { ...range }],
+    queryFn: ({ queryKey }) =>
+      getLogs({ ...(queryKey[1] as GetLogsQueryParamSchema) }),
   });
 
   const { mutate: createLogMutation, isPending: isCreating } = useMutation({
     mutationFn: createLog,
     onSuccess(data) {
-      qc.setQueryData(['logs', { ...range }], () => data.filter(
-        ({ startTime, endTime }) => range.startTime <= endTime && range.endTime >= startTime,
-      ));
+      qc.setQueryData(["logs", { ...range }], () =>
+        data.filter(
+          ({ startTime, endTime }) =>
+            range.startTime <= endTime && range.endTime >= startTime,
+        ),
+      );
     },
   });
 
   const { mutate: updateLogMutation, isPending: isUpdating } = useMutation({
     mutationFn: updateLog,
     onSuccess(data) {
-      qc.setQueryData(['logs', { ...range }], () => data.filter(
-        ({ startTime, endTime }) => range.startTime <= endTime && range.endTime >= startTime,
-      ));
+      qc.setQueryData(["logs", { ...range }], () =>
+        data.filter(
+          ({ startTime, endTime }) =>
+            range.startTime <= endTime && range.endTime >= startTime,
+        ),
+      );
     },
   });
 
   const { mutate: deleteLogMutation, isPending: isDeleting } = useMutation({
     mutationFn: deleteLog,
     onSuccess(_data, id) {
-      qc.setQueryData(['logs', { ...range }], (old: LogJsonEntrySchema[]) => old.filter(({ id: oldId }) => oldId !== id));
+      qc.setQueryData(["logs", { ...range }], (old: LogJsonEntrySchema[]) =>
+        old.filter(({ id: oldId }) => oldId !== id),
+      );
     },
   });
 
@@ -95,16 +106,16 @@ function App(): ReactNode {
         for (const log of logs) {
           const logStartDate = new Date(log.startTime);
           const logEndDate = new Date(log.endTime);
-          const startOfNextDay
-            = new Date(selectedYear, selectedMonth - 1, date + 1).getTime() - 1;
+          const startOfNextDay =
+            new Date(selectedYear, selectedMonth - 1, date + 1).getTime() - 1;
           const startOfDay = new Date(
             selectedYear,
             selectedMonth - 1,
             date,
           ).getTime();
           if (
-            logEndDate.getTime() >= startOfDay
-            && logStartDate.getTime() <= startOfNextDay
+            logEndDate.getTime() >= startOfDay &&
+            logStartDate.getTime() <= startOfNextDay
           ) {
             logsInDate.push(log);
           }
@@ -114,6 +125,17 @@ function App(): ReactNode {
     }
     return result;
   }, [selectedYear, selectedMonth, logs, amountOfDays]);
+
+  const startOfMonth = new Date(
+    selectedYear,
+    selectedMonth,
+    1,
+    0,
+    0,
+    0,
+  ).getTime();
+  const endOfMonth =
+    new Date(selectedYear, selectedMonth + 1, 1, 0, 0, 0).getTime() - 1;
 
   return (
     <div className="mb-10 flex flex-col p-6">
@@ -135,8 +157,8 @@ function App(): ReactNode {
         }}
         initialData={logs?.find((log) => log.id === selectedLogToUpdate?.id)}
         onSubmit={(data) => {
-          selectedLogToUpdate
-          && updateLogMutation({ id: selectedLogToUpdate.id, log: data });
+          selectedLogToUpdate &&
+            updateLogMutation({ id: selectedLogToUpdate.id, log: data });
           setSelectedLogToUpdate(undefined);
         }}
         isSubmitting={isUpdating}
@@ -182,7 +204,7 @@ function App(): ReactNode {
           <Button
             key={month.id}
             onClick={() => setSelectedMonth(month.id)}
-            variant={selectedMonth === month.id ? 'default' : 'secondary'}
+            variant={selectedMonth === month.id ? "default" : "secondary"}
           >
             {month.label}
           </Button>
@@ -192,16 +214,31 @@ function App(): ReactNode {
         <div className="font-bold">
           {Number(
             logs?.reduce(
-              (acc, log) => acc + (log.endTime - log.startTime) / (60 * 60 * 1000),
+              (acc, log) => {
+                const logStartDate = new Date(log.startTime)
+                const logEndDate = new Date(log.endTime)
+                let duration: number = 0
+                if (logStartDate.getMonth() !== logEndDate.getMonth()) {
+                  duration = getLogDuration(
+                    log,
+                    selectedYear,
+                    selectedMonth,
+                    logStartDate.getMonth() === selectedMonth - 1 ? logStartDate.getDate() - 1 : logEndDate.getDate() - 1,
+                    "hour",
+                  )
+                } else {
+                  duration += (log.endTime - log.startTime) / (1000 * 60 * 60)
+                }
+                return acc + duration
+              },
               0,
             ),
-          ).toFixed(4)}
-          {' '}
+          ).toFixed(4)}{" "}
           hours
         </div>
         <div className="text-sm">
           worked in
-          {' ' + MONTHS[selectedMonth - 1].label}
+          {" " + MONTHS[selectedMonth - 1].label}
         </div>
       </div>
       <div className="relative mt-6 flex flex-col overflow-auto pt-6 shadow-xl">
@@ -210,8 +247,8 @@ function App(): ReactNode {
             <div
               key={date}
               className={cn(
-                'flex h-16 min-w-[1600px]',
-                cnif({ 'bg-gray-200': date % 2 === 0 }, 'bg-gray-50'),
+                "flex h-16 min-w-[1600px]",
+                cnif({ "bg-gray-200": date % 2 === 0 }, "bg-gray-50"),
               )}
             >
               <div className="sticky left-0 z-40 flex w-24 flex-col bg-gray-300 py-1 pl-4">
@@ -238,9 +275,9 @@ function App(): ReactNode {
                         date + 1,
                       )}
                       className={cn(
-                        'absolute bottom-0 top-0 z-30 my-2 flex flex-col items-center',
-                        'justify-center rounded-sm bg-black font-semibold text-white shadow-sm',
-                        'truncate px-1',
+                        "absolute bottom-0 top-0 z-30 my-2 flex flex-col items-center",
+                        "justify-center rounded-sm bg-black font-semibold text-white shadow-sm",
+                        "truncate px-1",
                       )}
                     >
                       {getLogDuration(
@@ -248,12 +285,11 @@ function App(): ReactNode {
                         selectedYear,
                         selectedMonth,
                         date,
-                        'ms',
-                      )
-                      >= 1.75 * 60 * 60 * 1000 && (
+                        "ms",
+                      ) >=
+                        1.75 * 60 * 60 * 1000 && (
                         <div className="text-sm">
-                          {new Date(log.startTime).toTimeString().slice(0, 5)}
-                          -
+                          {new Date(log.startTime).toTimeString().slice(0, 5)}-
                           {new Date(log.endTime).toTimeString().slice(0, 5)}
                         </div>
                       )}
@@ -263,7 +299,7 @@ function App(): ReactNode {
                           selectedYear,
                           selectedMonth,
                           date,
-                          'hour',
+                          "hour",
                         )}
                         h
                       </div>
@@ -289,8 +325,8 @@ function App(): ReactNode {
               <div className="ml-2 h-full w-[1px] bg-gray-800" />
               <div
                 className={cn(
-                  'sticky right-0 flex flex-col items-center justify-center',
-                  'z-30 w-32 bg-gray-300 px-3 text-sm shadow-xl',
+                  "sticky right-0 flex flex-col items-center justify-center",
+                  "z-30 w-32 bg-gray-300 px-3 text-sm shadow-xl",
                 )}
               >
                 <div className="text-xl font-semibold">
@@ -299,14 +335,15 @@ function App(): ReactNode {
                       logsMap
                         .get(date + 1)
                         ?.reduce(
-                          (acc, log) => acc
-                          + getLogDuration(
-                            log,
-                            selectedYear,
-                            selectedMonth,
-                            date,
-                            'hour',
-                          ),
+                          (acc, log) =>
+                            acc +
+                            getLogDuration(
+                              log,
+                              selectedYear,
+                              selectedMonth,
+                              date,
+                              "hour",
+                            ),
                           0,
                         ) ?? 0
                     ).toFixed(4),
