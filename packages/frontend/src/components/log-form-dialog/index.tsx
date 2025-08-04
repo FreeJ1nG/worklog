@@ -1,9 +1,9 @@
-import { CirclePlus, Dot, Trash2 } from 'lucide-react';
-import { type ReactNode, useCallback, useEffect, useState } from 'react';
-import { type LogSchema } from 'worklog-shared';
+import { CirclePlus, Dot, Trash2 } from 'lucide-react'
+import { type ReactNode, useCallback, useEffect, useState } from 'react'
+import { type LogSchema } from 'worklog-shared'
 
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Dialog,
   DialogClose,
@@ -11,23 +11,23 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { LoadingButton } from '@/components/ui/loading-button';
-import { useToast } from '@/components/ui/use-toast';
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { LoadingButton } from '@/components/ui/loading-button'
+import { useToast } from '@/components/ui/use-toast'
 
 export type LogFormDialogProps = {
-  isSubmitting: boolean;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSubmit: (data: LogSchema) => void;
+  isSubmitting: boolean
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onSubmit: (data: LogSchema) => void
 } & (
   | {
-    type: 'update';
-    initialData?: LogSchema;
+    type: 'update'
+    initialData?: LogSchema
   }
-  | { type: 'create'; initialData?: undefined }
-);
+  | { type: 'create', initialData?: undefined }
+)
 
 export const LogFormDialog = ({
   open,
@@ -37,83 +37,83 @@ export const LogFormDialog = ({
   isSubmitting,
   onSubmit,
 }: LogFormDialogProps): ReactNode => {
-  const { toast } = useToast();
+  const { toast } = useToast()
   const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>(
     initialData ? new Date(initialData.startTime) : new Date(),
-  );
+  )
   const [selectedEndDate, setSelectedEndDate] = useState<Date | undefined>(
     initialData ? new Date(initialData.endTime) : new Date(),
-  );
+  )
   const [startTime, setStartTime] = useState<string>(
     initialData
       ? new Date(initialData.startTime).toTimeString().slice(0, 5)
       : '',
-  );
+  )
   const [endTime, setEndTime] = useState<string>(
     initialData ? new Date(initialData.endTime).toTimeString().slice(0, 5) : '',
-  );
+  )
   const [descriptions, setDescriptions] = useState<string[]>(
     initialData ? initialData.descriptions : [''],
-  );
+  )
 
   const resetData = useCallback(() => {
     setSelectedStartDate(
       initialData ? new Date(initialData.startTime) : new Date(),
-    );
+    )
     setSelectedEndDate(
       initialData ? new Date(initialData.endTime) : new Date(),
-    );
+    )
     setStartTime(
       initialData
         ? new Date(initialData.startTime).toTimeString().slice(0, 5)
         : '',
-    );
+    )
     setEndTime(
       initialData
         ? new Date(initialData.endTime).toTimeString().slice(0, 5)
         : '',
-    );
-    setDescriptions(initialData ? initialData.descriptions : ['']);
-  }, [initialData]);
+    )
+    setDescriptions(initialData ? initialData.descriptions : [''])
+  }, [initialData])
 
   useEffect(() => {
-    if (!initialData) return;
-    resetData();
-  }, [initialData, resetData]);
+    if (!initialData) return
+    resetData()
+  }, [initialData, resetData])
 
   const handleSubmit = useCallback(() => {
     if (!selectedStartDate || !selectedEndDate) {
-      toast({ title: 'You must select a date', variant: 'destructive' });
-      return;
+      toast({ title: 'You must select a date', variant: 'destructive' })
+      return
     }
     if (startTime === '') {
-      toast({ title: 'You must select a start time', variant: 'destructive' });
-      return;
+      toast({ title: 'You must select a start time', variant: 'destructive' })
+      return
     }
     if (endTime === '') {
-      toast({ title: 'You must select an end time', variant: 'destructive' });
-      return;
+      toast({ title: 'You must select an end time', variant: 'destructive' })
+      return
     }
-    const startTimeDate = new Date(selectedStartDate);
-    const endTimeDate = new Date(selectedEndDate);
-    const [sh, sm] = startTime.split(':');
-    startTimeDate.setHours(Number.parseInt(sh, 10));
-    startTimeDate.setMinutes(Number.parseInt(sm, 10));
-    startTimeDate.setSeconds(0);
-    startTimeDate.setMilliseconds(0);
-    const [eh, em] = endTime.split(':');
-    endTimeDate.setHours(Number.parseInt(eh, 10));
-    endTimeDate.setMinutes(Number.parseInt(em, 10));
-    endTimeDate.setSeconds(0);
-    endTimeDate.setMilliseconds(0);
+    const startTimeDate = new Date(selectedStartDate)
+    const endTimeDate = new Date(selectedEndDate)
+    const [sh, sm] = startTime.split(':')
+    startTimeDate.setHours(Number.parseInt(sh, 10))
+    startTimeDate.setMinutes(Number.parseInt(sm, 10))
+    startTimeDate.setSeconds(0)
+    startTimeDate.setMilliseconds(0)
+    const [eh, em] = endTime.split(':')
+    endTimeDate.setHours(Number.parseInt(eh, 10))
+    endTimeDate.setMinutes(Number.parseInt(em, 10))
+    endTimeDate.setSeconds(0)
+    endTimeDate.setMilliseconds(0)
     onSubmit({
       startTime: startTimeDate.getTime(),
       endTime: endTimeDate.getTime(),
       descriptions: descriptions.filter(
-        (desc) => Boolean(desc) && typeof desc === 'string',
+        desc => Boolean(desc) && typeof desc === 'string',
       ),
-    });
-    resetData();
+    })
+    resetData()
   }, [
     endTime,
     startTime,
@@ -123,14 +123,14 @@ export const LogFormDialog = ({
     onSubmit,
     toast,
     resetData,
-  ]);
+  ])
 
   return (
     <Dialog
       open={open}
       onOpenChange={(newOpen) => {
-        onOpenChange(newOpen);
-        resetData();
+        onOpenChange(newOpen)
+        resetData()
       }}
     >
       <DialogContent className="max-h-[calc(100vh-40px)] w-[820px] max-w-2xl">
@@ -146,12 +146,12 @@ export const LogFormDialog = ({
             <Calendar
               mode="single"
               selected={selectedStartDate}
-              onSelect={(date) => setSelectedStartDate(date)}
+              onSelect={date => setSelectedStartDate(date)}
             />
             <Calendar
               mode="single"
               selected={selectedEndDate}
-              onSelect={(date) => setSelectedEndDate(date)}
+              onSelect={date => setSelectedEndDate(date)}
             />
           </div>
           <div className="mt-2 flex items-center gap-3">
@@ -159,14 +159,14 @@ export const LogFormDialog = ({
               type="time"
               className="w-fit"
               value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
+              onChange={e => setStartTime(e.target.value)}
             />
             <div>-</div>
             <Input
               type="time"
               className="w-fit"
               value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
+              onChange={e => setEndTime(e.target.value)}
             />
           </div>
           <div className="mt-5 flex w-full flex-col gap-1">
@@ -176,7 +176,7 @@ export const LogFormDialog = ({
                 <Input
                   type="text"
                   value={desc}
-                  onChange={(e) => setDescriptions((prev) => [
+                  onChange={e => setDescriptions(prev => [
                     ...prev.slice(0, i),
                     e.target.value,
                     ...prev.slice(i + 1),
@@ -184,7 +184,7 @@ export const LogFormDialog = ({
                 />
                 <Button
                   variant="destructive"
-                  onClick={() => setDescriptions((prev) => [
+                  onClick={() => setDescriptions(prev => [
                     ...prev.slice(0, i),
                     ...prev.slice(i + 1),
                   ])}
@@ -196,7 +196,7 @@ export const LogFormDialog = ({
               </div>
             ))}
             <Button
-              onClick={() => setDescriptions((prev) => [...prev, ''])}
+              onClick={() => setDescriptions(prev => [...prev, ''])}
               className="my-2 w-full"
               variant="outline"
               size="sm"
@@ -224,5 +224,5 @@ export const LogFormDialog = ({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}

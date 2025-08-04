@@ -1,11 +1,11 @@
-import { LoaderCircle } from 'lucide-react';
-import { type ReactNode } from 'react';
+import { LoaderCircle } from 'lucide-react'
+import { type ReactNode } from 'react'
 
-import { Button, type ButtonProps } from '@/components/ui/button';
+import { Button, type ButtonProps } from '@/components/ui/button'
 
 export interface LoadingButtonProps extends ButtonProps {
-  loading: boolean;
-  className: string;
+  loading: boolean
+  className: string
 }
 
 export const LoadingButton = ({
@@ -19,5 +19,5 @@ export const LoadingButton = ({
       {loading && <LoaderCircle className="mr-2 h-5 w-5" />}
       {!loading && children}
     </Button>
-  );
-};
+  )
+}

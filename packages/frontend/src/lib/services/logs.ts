@@ -2,9 +2,9 @@ import {
   type GetLogsQueryParamSchema,
   type LogJsonEntrySchema,
   type LogSchema,
-} from 'worklog-shared';
+} from 'worklog-shared'
 
-import { getAuthHeader } from '@/lib/utils';
+import { getAuthHeader } from '@/lib/utils'
 
 export const getLogs = async ({
   startTime,
@@ -13,10 +13,10 @@ export const getLogs = async ({
   const res = await fetch(
     `${import.meta.env.VITE_API_BASE_URL}/logs?startTime=${startTime}&endTime=${endTime}`,
     { method: 'GET' },
-  );
-  if (!res.ok) throw new Error('Something went wrong while fetching logs');
-  return (await res.json()).data;
-};
+  )
+  if (!res.ok) throw new Error('Something went wrong while fetching logs')
+  return (await res.json()).data
+}
 
 export const createLog = async (
   log: LogSchema,
@@ -28,13 +28,13 @@ export const createLog = async (
     },
     method: 'POST',
     body: JSON.stringify(log),
-  });
+  })
   if (!res.ok)
     throw new Error(
       `Something went wrong while creating logs: ${(await res.json()).message}`,
-    );
-  return (await res.json()).data;
-};
+    )
+  return (await res.json()).data
+}
 
 export const deleteLog = async (id: number): Promise<void> => {
   const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/logs/${id}`, {
@@ -42,20 +42,20 @@ export const deleteLog = async (id: number): Promise<void> => {
     headers: {
       ...getAuthHeader(),
     },
-  });
+  })
   if (!res.ok)
     throw new Error(
       `Something went wrong while deleting logs: ${(await res.json()).message}`,
-    );
-  return;
-};
+    )
+  return
+}
 
 export const updateLog = async ({
   id,
   log,
 }: {
-  id: number;
-  log: LogSchema;
+  id: number
+  log: LogSchema
 }): Promise<LogJsonEntrySchema[]> => {
   const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/logs/${id}`, {
     headers: {
@@ -64,10 +64,10 @@ export const updateLog = async ({
     },
     method: 'PUT',
     body: JSON.stringify(log),
-  });
+  })
   if (!res.ok)
     throw new Error(
       `Something went wrong while updating logs: ${(await res.json()).message}`,
-    );
-  return (await res.json()).data;
-};
+    )
+  return (await res.json()).data
+}

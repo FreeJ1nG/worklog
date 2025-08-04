@@ -1,9 +1,9 @@
-import { type ReactNode } from 'react';
+import { type ReactNode } from 'react'
 
 export interface LoadingComponentProps {
-  fallback?: ReactNode;
-  children?: ReactNode;
-  loading: boolean;
+  fallback?: ReactNode
+  children?: ReactNode
+  loading: boolean
 }
 
 export const LoadingComponent = ({
@@ -11,5 +11,5 @@ export const LoadingComponent = ({
   children,
   loading,
 }: LoadingComponentProps): ReactNode => {
-  return loading ? fallback : children;
-};
+  return loading ? fallback : children
+}

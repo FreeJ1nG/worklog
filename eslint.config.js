@@ -1,10 +1,48 @@
-import { rational } from 'eslint-config-rational';
+import js from '@eslint/js'
+import stylistic from '@stylistic/eslint-plugin'
+import reactHooks from 'eslint-plugin-react-hooks'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
 
-export default rational({
-  ignores: ['**/{.git,node_modules,out,dist}'],
-  override: {
+export default tseslint.config(
+  { ignores: ['**/dist/**/*', 'node_modules', 'public'] },
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+    },
     rules: {
-      'jsdoc/require-jsdoc': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
     },
   },
-});
+  {
+    ...stylistic.configs['recommended'],
+    rules: {
+      ...stylistic.configs['recommended'].rules,
+      '@stylistic/operator-linebreak': 'off',
+      '@stylistic/multiline-ternary': 'off',
+    },
+  },
+  {
+    plugins: {
+      'simple-import-sort': simpleImportSort,
+    },
+    rules: {
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
+    },
+  },
+)

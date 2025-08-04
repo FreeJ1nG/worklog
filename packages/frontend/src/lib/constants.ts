@@ -1,4 +1,4 @@
-import { type Day, type Month } from './types';
+import { type Day, type Month } from './types'
 
 export const MONTHS: Month[] = [
   {
@@ -61,7 +61,7 @@ export const MONTHS: Month[] = [
     label: 'December',
     shortLabel: 'Dec',
   },
-];
+]
 
 export const DAYS: Day[] = [
   {
@@ -99,6 +99,6 @@ export const DAYS: Day[] = [
     label: 'Saturday',
     shortLabel: 'Sat',
   },
-];
+]
 
-export const SESSION_ID_KEY = '__worklog-session-id__';
+export const SESSION_ID_KEY = '__worklog-session-id__'

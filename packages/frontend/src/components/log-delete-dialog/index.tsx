@@ -1,6 +1,6 @@
-import { type ReactNode } from 'react';
+import { type ReactNode } from 'react'
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -9,14 +9,14 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { LoadingButton } from '@/components/ui/loading-button';
+} from '@/components/ui/dialog'
+import { LoadingButton } from '@/components/ui/loading-button'
 
 export interface LogDeleteDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  isDeleting: boolean;
-  onDelete: () => void;
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  isDeleting: boolean
+  onDelete: () => void
 }
 
 export default function LogDeleteDialog({
@@ -52,5 +52,5 @@ export default function LogDeleteDialog({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

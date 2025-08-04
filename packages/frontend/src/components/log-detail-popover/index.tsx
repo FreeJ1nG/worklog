@@ -1,17 +1,17 @@
-import { PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
-import { Dot, Pencil, Trash2 } from 'lucide-react';
-import { type ReactNode } from 'react';
-import { type LogSchema } from 'worklog-shared';
+import { PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
+import { Dot, Pencil, Trash2 } from 'lucide-react'
+import { type ReactNode } from 'react'
+import { type LogSchema } from 'worklog-shared'
 
-import { Button } from '@/components/ui/button';
-import { Popover } from '@/components/ui/popover';
-import { useAuth } from '@/lib/hooks/use-auth';
+import { Button } from '@/components/ui/button'
+import { Popover } from '@/components/ui/popover'
+import { useAuth } from '@/lib/hooks/use-auth'
 
 export interface LogDetailPopoverProps {
-  children?: ReactNode;
-  log: LogSchema;
-  onEdit: () => void;
-  onDelete: () => void;
+  children?: ReactNode
+  log: LogSchema
+  onEdit: () => void
+  onDelete: () => void
 }
 
 export default function LogDetailPopover({
@@ -20,7 +20,7 @@ export default function LogDetailPopover({
   onEdit,
   onDelete,
 }: LogDetailPopoverProps): ReactNode {
-  const isAuthenticated = useAuth();
+  const isAuthenticated = useAuth()
 
   return (
     <Popover>
@@ -63,5 +63,5 @@ export default function LogDetailPopover({
         </div>
       </PopoverContent>
     </Popover>
-  );
+  )
 }

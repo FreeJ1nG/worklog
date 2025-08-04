@@ -1,6 +1,6 @@
 // Schemas
-export * from './schemas/logs.js';
-export * from './schemas/users.js';
+export * from './schemas/logs.js'
+export * from './schemas/users.js'
 
 // Utils
-export * from './utils/crypto.js';
+export * from './utils/crypto.js'
